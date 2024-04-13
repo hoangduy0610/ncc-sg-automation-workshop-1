@@ -38,41 +38,64 @@
                 var password = $('#password').val();
 
                 // Perform registration logic here
-                var authInfo = JSON.parse(localStorage.getItem('authInfo'));
-                if (!authInfo) {
-                    authInfo = [];
-                }
-                const isExisting = authInfo && authInfo.some(function (user) {
-                    return user.username === username;
+                $.ajax({
+                    url: 'https://661744bbed6b8fa434824a06.mockapi.io/api/v1/ncc-qa-workshop',
+                    method: 'GET',
+                    success: function (authInfo) {
+                        console.log(authInfo);
+                        const isExisting = authInfo?.length && authInfo.some(function (user) {
+                            return user.username === username;
+                        });
+                        if (isExisting) {
+                            var noticeElement = document.createElement('div');
+                            noticeElement.classList.add('alert', 'alert-danger');
+                            noticeElement.textContent = 'Username already exists';
+                            document.body.appendChild(noticeElement);
+
+                            // Clear notice after 5 seconds
+                            setTimeout(function () {
+                                noticeElement.remove();
+                            }, 5000);
+
+                            return;
+                        }
+                        // Send registration data to API
+                        $.ajax({
+                            url: 'https://661744bbed6b8fa434824a06.mockapi.io/api/v1/ncc-qa-workshop',
+                            method: 'POST',
+                            data: {
+                                username: username,
+                                password: password
+                            },
+                            success: function (response) {
+                                // Handle successful registration
+                                var noticeElement = document.createElement('div');
+                                noticeElement.classList.add('alert', 'alert-success');
+                                noticeElement.textContent = 'Registration successful';
+                                document.body.appendChild(noticeElement);
+                                // Clear notice after 5 seconds
+                                setTimeout(function () {
+                                    noticeElement.remove();
+                                }, 5000);
+                            },
+                            error: function (xhr, status, error) {
+                                // Handle registration error
+                                var noticeElement = document.createElement('div');
+                                noticeElement.classList.add('alert', 'alert-danger');
+                                noticeElement.textContent = 'Registration failed: ' + error;
+                                document.body.appendChild(noticeElement);
+                                // Clear notice after 5 seconds
+                                setTimeout(function () {
+                                    noticeElement.remove();
+                                }, 5000);
+                            }
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle API error
+                        console.error(error);
+                    }
                 });
-                if (isExisting) {
-                    var noticeElement = document.createElement('div');
-                    noticeElement.classList.add('alert', 'alert-danger');
-                    noticeElement.textContent = 'Username already exists';
-                    document.body.appendChild(noticeElement);
-
-                    // Clear notice after 5 seconds
-                    setTimeout(function () {
-                        noticeElement.remove();
-                    }, 5000);
-
-                    return;
-                }
-                authInfo.push({
-                    username: username,
-                    password: password
-                });
-                localStorage.setItem('authInfo', JSON.stringify(authInfo));
-
-                var noticeElement = document.createElement('div');
-                noticeElement.classList.add('alert', 'alert-success');
-                noticeElement.textContent = 'Registration successful';
-                document.body.appendChild(noticeElement);
-
-                // Clear notice after 5 seconds
-                setTimeout(function () {
-                    noticeElement.remove();
-                }, 5000);
             });
         });
     </script>

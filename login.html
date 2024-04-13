@@ -38,23 +38,40 @@
                 var password = $('#password').val();
 
                 // Check username and password
-                var authInfo = JSON.parse(localStorage.getItem('authInfo'));
-                const isValid = authInfo && authInfo.some(function (user) {
-                    return user.username === username && user.password === password;
-                });
-                if (isValid) {
-                    window.location.href = 'home.html';
-                } else {
-                    var noticeElement = document.createElement('div');
-                    noticeElement.classList.add('alert', 'alert-danger');
-                    noticeElement.textContent = 'Invalid username or password';
-                    document.body.appendChild(noticeElement);
+                $.ajax({
+                    url: 'https://661744bbed6b8fa434824a06.mockapi.io/api/v1/ncc-qa-workshop',
+                    method: 'GET',
+                    success: function (authInfo) {
 
-                    // Clear notice after 5 seconds
-                    setTimeout(function () {
-                        noticeElement.remove();
-                    }, 5000);
-                }
+                        const isValid = authInfo && authInfo.some(function (user) {
+                            return user.username === username && user.password === password;
+                        });
+                        if (isValid) {
+                            window.location.href = 'home.html';
+                        } else {
+                            var noticeElement = document.createElement('div');
+                            noticeElement.classList.add('alert', 'alert-danger');
+                            noticeElement.textContent = 'Invalid username or password';
+                            document.body.appendChild(noticeElement);
+
+                            // Clear notice after 5 seconds
+                            setTimeout(function () {
+                                noticeElement.remove();
+                            }, 5000);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        var noticeElement = document.createElement('div');
+                        noticeElement.classList.add('alert', 'alert-danger');
+                        noticeElement.textContent = 'Invalid username or password';
+                        document.body.appendChild(noticeElement);
+
+                        // Clear notice after 5 seconds
+                        setTimeout(function () {
+                            noticeElement.remove();
+                        }, 5000);
+                    }
+                });
             });
         });
     </script>
