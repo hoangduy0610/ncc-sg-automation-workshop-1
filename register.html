@@ -39,7 +39,7 @@
 
                 // Perform registration logic here
                 $.ajax({
-                    url: 'https://661744bbed6b8fa434824a06.mockapi.io/api/v1/ncc-qa-workshop',
+                    url: 'https://684b938eed2578be881bc13e.mockapi.io/api/v1/users',
                     method: 'GET',
                     success: function (authInfo) {
                         console.log(authInfo);
@@ -61,7 +61,7 @@
                         }
                         // Send registration data to API
                         $.ajax({
-                            url: 'https://661744bbed6b8fa434824a06.mockapi.io/api/v1/ncc-qa-workshop',
+                            url: 'https://684b938eed2578be881bc13e.mockapi.io/api/v1/users',
                             method: 'POST',
                             data: {
                                 username: username,
