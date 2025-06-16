@@ -12,16 +12,16 @@
 <body>
     <div class="container">
         <h1>Register</h1>
-        <form id="registerForm">
+        <form id="registerForm" data-e2e="frmRegister">
             <div class="form-group">
                 <label for="email">Username</label>
-                <input type="text" class="form-control" id="email" placeholder="Enter your email">
+                <input type="text" class="form-control" id="email" data-e2e="txtUsername" placeholder="Enter your email">
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" placeholder="Enter password">
+                <input type="password" class="form-control" id="password" data-e2e="txtPassword" placeholder="Enter password">
             </div>
-            <button type="submit" class="btn btn-primary">Register</button>
+            <button type="submit" class="btn btn-primary" data-e2e="btnSubmit">Register</button>
         </form>
     </div>
 
